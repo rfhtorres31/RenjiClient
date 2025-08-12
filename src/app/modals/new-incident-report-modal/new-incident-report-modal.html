@@ -1,0 +1,26 @@
+<div class="modal-wrapper" *ngIf="show">
+ <!-- the $event.stopPropagation prevents the onClose() from running when its clicked -->
+  <div class="modal-content" (click)="$event.stopPropagation()"> 
+    <div class="header">
+      <span>Create Incident Report</span>
+    </div>
+    <form class="form-content" [formGroup]="myForm" (ngSubmit)="onSubmit($event)">
+      <div class="form-field">
+        <label>Title</label>
+        <input type="text" formControlName="title">
+      </div> 
+      <div id="description" class="form-field">
+        <label>Description</label>
+        <textarea rows="4" cols="50" formControlName="description"></textarea>
+      </div> 
+      <div class="form-field">
+        <label>Location</label>
+        <input type="text" formControlName="location">
+      </div> 
+      <div id="footer">
+        <button id="cancel-btn" type="button" (click)="onClose()">Cancel</button>
+        <button id="submit-btn" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
