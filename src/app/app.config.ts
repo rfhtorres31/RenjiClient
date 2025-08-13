@@ -6,13 +6,14 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AuthInterceptor } from './services/auth.interceptor';
-
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideCharts(withDefaultRegisterables()),
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor]) // ✅ register here

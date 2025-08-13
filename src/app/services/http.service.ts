@@ -20,7 +20,7 @@ export class HttpService {
         })
       return this.http.post(this.apiURL + '/auth/register', userData, {headers, observe: 'response'}); // put observe: 'response' for full HTTP response
 
-    }
+   }
   
 
    loginUser(userData: LoginRequest): Observable<any>{

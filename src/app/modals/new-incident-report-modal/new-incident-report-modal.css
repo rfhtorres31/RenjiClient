@@ -12,7 +12,7 @@
 }
 
 .modal-content {
-  height: 80%;
+  height: 85%;
   width: 40%;
   background: white;
   padding: 2%;
@@ -42,11 +42,18 @@
 }
 
 .form-field input,
-.form-field textarea {
+.form-field textarea  {
   height: 100%;
   padding-left: 2%;
   margin-top: 1%;
 }
+
+#accident-type {
+  height: 100%;
+  padding-left: 2%;
+  margin-top: 1%;  
+}
+
 
 .form-field textarea {
   padding: 2%;

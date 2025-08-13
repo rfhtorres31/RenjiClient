@@ -27,8 +27,9 @@ export class NewIncidentReportModal implements OnInit{
   ngOnInit(): void {
             this.myForm = this.fb.group({
             title: ['', [Validators.required]],
+            accidentTypeId: ['', [Validators.required]],
             description: ['', Validators.required],
-            location: ['', Validators.required]
+            location: ['', Validators.required],         
         });    
   }
    
@@ -40,11 +41,7 @@ export class NewIncidentReportModal implements OnInit{
       this.myForm.reset();
       this.onClose(); // close the modal after submit
     }
-
-
   }
-
-
 
 
 

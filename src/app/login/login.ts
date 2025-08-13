@@ -5,6 +5,7 @@ import { HttpService } from '../services/http.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService} from 'ngx-spinner';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class Login implements OnInit {
 
     constructor(private fb: FormBuilder, 
                 private httpService: HttpService,
+                private userService: UserService,
                 private router: Router,
                 private spinner: NgxSpinnerService) {}
 
@@ -39,12 +41,19 @@ export class Login implements OnInit {
               // All 200 status codes are catched by next handler
               next: (response) => {
                  if (response.status == 200){
-                    
-                    const token: string = response.body.details.token; 
-                    localStorage.setItem('token', token);
-                    
                     console.log("Login Successful");
-                    this.router.navigate(['/dashboard']);
+                    console.log(response);
+                    const token: string = response.body.details.token; 
+                    const userFullName: string = response.body.details.name;
+                    const userID: string = response.body.details.userID;
+                    localStorage.setItem('token', token);
+
+                    console.log(userFullName);
+
+                    this.userService.setUserName(userFullName);
+                    this.userService.setUserId(userID);
+
+                    this.router.navigate(['/profile']);
                     this.spinner.hide();
                  }
               },

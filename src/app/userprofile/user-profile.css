@@ -1,5 +1,5 @@
 .main-wrapper {
-  height: 100%;
+  height: 100vh;
   background: rgb(232, 232, 232);
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
 
 .user-menu {
   height: 100%;
-  width: 20%;
+  width: 22%;
   background: rgb(255, 152, 152); 
   position: relative;
 }
@@ -35,6 +35,13 @@
 #dropdown-icon {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 5%;
+}
+
+#dropdown-username {
+  color: white;
+  font-size: 0.9rem;
 }
 
 .user-menu-toggle  {
@@ -42,7 +49,6 @@
   background: rgb(31, 31, 31);
   width: 100%;
   border: none;
-  border: 1px solid rgb(0, 21, 255);
 }
 
 
@@ -50,6 +56,7 @@
   position: absolute;
   height: auto; /* its height will be dependent on its content */
   background: rgb(255, 255, 255);  
+  border-radius: 2%;
   width: 100%;
   top: 100%; /* This puts the top edge of the drop down container exactly 100% below from the top edge of the parent container, */
              /* if the parents container height is 50px, the child container top edge with top: 100%, position: absolute will be 50px below from the top edge of the parents container */
@@ -90,15 +97,16 @@
 }
 
 .main-content {
-  height: 100%;
+  flex:1;
   display: flex;
   flex-direction: column;
   padding: 2%;
   gap: 4%;
+  min-height: 0;
 }
 
 .top-content {
-  height: 20%;
+  height: 12%;
   display: flex;
   gap: 4%;
 }
@@ -130,15 +138,31 @@
 
 
 .middle-content {
-  height: 40%;
+  height: 45%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   background-color: white;
+  display: flex;
+  justify-content: center;
+  gap: 5%;
 }
+
+.chart {
+  height: 100%;
+  width: 50%;
+}
+
+.chart-info {
+  height: 100%;
+  width: 40%;
+  border: 1px solid rgb(0, 13, 255);
+}
+
 
 .last-content {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 40%;
+  height: 35%;
   border-radius: 10px;
   background-color: white;
+  overflow-y: auto;
 }

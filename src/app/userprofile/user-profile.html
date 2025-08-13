@@ -6,7 +6,11 @@
      </div>
      <div class="user-menu">
        <button class="user-menu-toggle" type="submit" (click)="toggleMenu()">
-          <span id="dropdown-icon"><mat-icon style="color: white;">person</mat-icon></span>
+          <span id="dropdown-icon">
+            <mat-icon style="color: white;">person</mat-icon>
+            <span id="dropdown-username">{{userFullName}}</span>
+            <mat-icon style="color: white;">arrow_drop_down</mat-icon>
+          </span>
        </button>
        <div class="user-menu-dropdown"  [class.hide]="isMenuOpen">
           <a>Messages</a>
@@ -32,10 +36,38 @@
        <button class="top-content-btn" (click)="openModal()">New Incident</button>
     </div>
     <div class="middle-content">
-      
+       <div class="chart">
+            <canvas baseChart
+                     [data]="lineChartData"
+                     [options]="lineChartOptions"
+                     [type]="'line'">
+            </canvas>
+       </div>
+       <div class="chart-info">
+
+       </div>
     </div>
     <div class="last-content">
-      
+      <table border="1" cellpadding="8">
+        <thead>
+         <tr>
+            <th>ID</th>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Reported Date</th>
+            <th>Status</th>
+         </tr>
+        </thead>
+       <tbody>
+         <tr *ngFor="let report of incidentsArr">
+            <td>{{ report.id }}</td>
+            <td>{{ report.type }}</td>
+            <td>{{ report.location }}</td>
+            <td>{{ report.reportedDate }}</td>
+            <td>{{ report.status }}</td>
+         </tr>
+      </tbody>
+      </table>
     </div>
   </div>
 </div>
