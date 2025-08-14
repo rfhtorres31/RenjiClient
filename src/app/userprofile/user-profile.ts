@@ -9,15 +9,16 @@ import { HttpService } from '../services/http.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../services/user.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartOptions, ChartData, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartOptions, ChartData, ChartType, Chart, ArcElement, Tooltip, Legend } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { ReportsService } from '../services/reports.service';
 import { AgGridModule } from 'ag-grid-angular';
 import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
 import { ViewChild } from '@angular/core';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
+Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 @Component({
   selector: 'app-userprofile',
   standalone: true,
@@ -38,6 +39,9 @@ export class UserProfile implements OnInit {
   userId: string = "";
   chartYLabel = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
   barCharData: { x: string; y: number }[] = [];
+  noOfOpenReports: number = 0;
+  noOfInProgressReports: number = 0;
+  noOfResolvedReports: number = 0;
     
    // ======================= Incident Report Grid ================================= // 
    columnDefs = [
@@ -89,13 +93,13 @@ export class UserProfile implements OnInit {
       }
     },
     plugins: {
-      legend: { position: 'top' }
+      legend: { position: 'top' },
+      datalabels: { display: false }
     }
   };
 
   pieChartType: 'pie' = 'pie';
  // =================================================================================== //
-
 
  //==================== Pie Chart (Number of Accidents Per Type) ========================= //
    pieChartData!: ChartData<'pie', number[], string | string[]>;
@@ -119,13 +123,34 @@ export class UserProfile implements OnInit {
           tooltip: {                   // controls the hover info
             callbacks: {
               label: (context) => {
-                // Custom label text (your percentage logic)
+                const dataset = context.dataset.data; // array of values
+                const total = dataset.reduce((sum, value) => sum + value, 0);
+                const value = context.parsed; // current segment's value
+                const percentage = ((value / total) * 100).toFixed(2);
+
+                return `${context.label}, ${percentage}%`;
               }
             }
-          }
+          },
+         datalabels: {
+           color: '#ffffffff',
+           font: {
+             weight: 'bold',
+             size: 12
+           },
+           align: 'end',
+           offset: 10,
+           formatter: (value, context) => {
+               const data = context.chart.data.datasets[0].data as number[];
+               const total = data.reduce((sum, val) => sum + val, 0);
+               const percentage = Math.ceil((value / total) * 100) + '%';
+               return percentage;
+           }
         }
+       },
+     }
 
-   }
+   
 
  // ====================================================================================== //
 
@@ -157,12 +182,29 @@ export class UserProfile implements OnInit {
         // Retrieve Reports Summary 
         this.reportsService.retrieveReports(parseInt(userID)).subscribe({
           next: (response) => {
+
               if (response.ok){
                 this.spinner.hide();
                 this.rowData = response.body.details.data;
                 console.log(this.rowData);
               }
-              
+
+
+              for (let i=0; i<this.rowData.length; i++){
+                  const obj = this.rowData[i];
+
+                  if (obj.status === 'Open'){
+                      this.noOfOpenReports = this.noOfOpenReports + 1;
+                  }   
+                  
+                  if (obj.status === 'In Progress'){
+                    this.noOfInProgressReports = this.noOfInProgressReports + 1;
+                  }
+
+                  if (obj.status === 'Resolved'){
+                    this.noOfResolvedReports = this.noOfResolvedReports + 1;
+                  }
+              }            
           },
           error: (err) => {
               console.error(err);

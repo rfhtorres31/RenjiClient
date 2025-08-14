@@ -22,15 +22,15 @@
   <div class="main-content">
     <div class="top-content">
        <div class="top-content-child">
-          <span>12</span>
+          <span>{{noOfOpenReports}}</span>
           <span>Open</span>
        </div>
        <div class="top-content-child">
-          <span>5</span>
+          <span>{{noOfInProgressReports}}</span>
           <span>In Progress</span>
        </div>
        <div class="top-content-child">
-          <span>18</span>
+          <span>{{noOfResolvedReports}}</span>
           <span>Resolved</span>
        </div>
        <button class="top-content-btn" (click)="openModal()">New Incident</button>
