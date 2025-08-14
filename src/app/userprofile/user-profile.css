@@ -6,7 +6,7 @@
 }
 
 .top-bar {
-  height: 10%;
+  height: 7%;
   background: rgb(31, 31, 31);
   display: flex;
   justify-content: space-between; /* pushes children to opposite ends */
@@ -57,6 +57,7 @@
   height: auto; /* its height will be dependent on its content */
   background: rgb(255, 255, 255);  
   border-radius: 2%;
+  z-index: 1000;
   width: 100%;
   top: 100%; /* This puts the top edge of the drop down container exactly 100% below from the top edge of the parent container, */
              /* if the parents container height is 50px, the child container top edge with top: 100%, position: absolute will be 50px below from the top edge of the parents container */
@@ -100,15 +101,15 @@
   flex:1;
   display: flex;
   flex-direction: column;
-  padding: 2%;
-  gap: 4%;
+  padding: 1%;
+  gap: 2%;
   min-height: 0;
 }
 
 .top-content {
-  height: 12%;
+  height: 11%;
   display: flex;
-  gap: 4%;
+  gap: 1%;
 }
 
 .top-content-child {
@@ -124,7 +125,7 @@
 }
 
 .top-content-btn {
-  /* border: 1px solid rgb(255, 255, 255); */
+  border: 1px solid rgb(255, 255, 255);
   height: 100%;
   width: 30%;
   cursor: pointer;
@@ -138,31 +139,76 @@
 
 
 .middle-content {
-  height: 45%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  background-color: white;
+  height: 42%;
+  background: rgb(232, 232, 232);
   display: flex;
-  justify-content: center;
-  gap: 5%;
+  gap: 1%;
 }
 
-.chart {
+.chart-1 {
+  padding: 0.5%;
   height: 100%;
   width: 50%;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.chart-info {
+.chart-1 h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.chart-1 canvas {
+  width: 80% !important;
+  height: 100% !important;
+}
+
+.chart-2 {
   height: 100%;
-  width: 40%;
-  border: 1px solid rgb(0, 13, 255);
+  width: 50%; 
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.chart-2 h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.chart-2 canvas {
+  width: 100% !important;  /* fill container */
+  height: 100% !important; /* fill container */
 }
 
 
 .last-content {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 35%;
+  flex: 1;
   border-radius: 10px;
-  background-color: white;
-  overflow-y: auto;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.ag-theme-alpine {
+  width: 100%;
+  height: 100%; /* fill chart-info container */
+}
+
+.ag-theme-alpine .ag-header {
+   background-color: #f1f1f1;
+   border-bottom: 2px solid #007BFF;
+   color: #333;
+   font-weight: bold;
+}
+
+.ag-theme-alpine .ag-row {
+  border-bottom: 1px solid #ddd;
 }

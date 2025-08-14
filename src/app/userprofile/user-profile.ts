@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule} from '@angular/common';
 import { NewIncidentReportModal } from '../modals/new-incident-report-modal/new-incident-report-modal';
@@ -9,14 +9,24 @@ import { HttpService } from '../services/http.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../services/user.service';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartOptions, ChartData, ChartType } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { ReportsService } from '../services/reports.service';
+import { AgGridModule } from 'ag-grid-angular';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { ViewChild } from '@angular/core';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 @Component({
   selector: 'app-userprofile',
   standalone: true,
-  imports: [CommonModule, NewIncidentReportModal, NgxSpinnerModule, MatIconModule, BaseChartDirective],
+  imports: [CommonModule, 
+            NewIncidentReportModal, 
+            NgxSpinnerModule, 
+            MatIconModule, 
+            BaseChartDirective,
+            AgGridModule],
   templateUrl: './user-profile.html',
   styleUrls: ['./user-profile.css']
 })
@@ -27,7 +37,97 @@ export class UserProfile implements OnInit {
   userFullName: string = "";
   userId: string = "";
   chartYLabel = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
-  incidentsArr: Array<any> = [];
+  barCharData: { x: string; y: number }[] = [];
+    
+   // ======================= Incident Report Grid ================================= // 
+   columnDefs = [
+      { field: 'id', headerName: 'ID', sortable: true, filter: true },
+      { field: 'type', headerName: 'Type', sortable: true, filter: true },
+      { field: 'location', headerName: 'Location', sortable: true, filter: true },
+      { field: 'reportedDate', headerName: 'Reported Date', sortable: true, filter: true },
+      { field: 'status', headerName: 'Status', sortable: true, filter: true },
+   ]
+   
+    defaultColDef = {
+      flex: 1,
+      minWidth: 100,
+      resizable: true,
+    };
+
+    rowData: any[] = [];
+
+    
+ // ============================================================================== //
+
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective; // This gives an access to the canvas bar chart on the HTML Template
+
+ //==================== Bar Chart (Number of Accidents Per Type) ========================= //
+  public barChartData: ChartConfiguration<'bar', { x: string; y: number }[]>['data'] = {
+      datasets: [
+        {
+          label: 'Count',
+          data: [],
+          backgroundColor: 'rgba(54,162,235,0.7)',
+          borderColor: 'blue',
+          borderWidth: 1,
+        }
+      ]
+    };
+
+  // Chart options with a time scale
+  barChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        type: 'category',
+        title: { display: true, text: 'Accident Type' }
+      },
+      y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Count' }
+      }
+    },
+    plugins: {
+      legend: { position: 'top' }
+    }
+  };
+
+  pieChartType: 'pie' = 'pie';
+ // =================================================================================== //
+
+
+ //==================== Pie Chart (Number of Accidents Per Type) ========================= //
+   pieChartData!: ChartData<'pie', number[], string | string[]>;
+
+   pieChartOptions: ChartOptions<'pie'> = {
+         responsive: true,
+         maintainAspectRatio: false,
+         layout: {
+           padding: 10 // extra space so pie isn't cramped
+         },
+         plugins: {
+         legend: { position: 'right',
+                    labels: {
+              font: {
+                size: 14 // smaller text size (default is ~12–14)
+              },
+              boxWidth: 12, // size of the color box
+              padding: 5 // space between legend items
+            }
+          }, // controls the legend (color labels)
+          tooltip: {                   // controls the hover info
+            callbacks: {
+              label: (context) => {
+                // Custom label text (your percentage logic)
+              }
+            }
+          }
+        }
+
+   }
+
+ // ====================================================================================== //
 
   constructor(private router: Router,
               private userService: UserService,
@@ -36,86 +136,81 @@ export class UserProfile implements OnInit {
               private httpService: HttpService,){}
   
   ngOnInit(): void {
-      this.spinner.show();
-
-      this.userService.userName$.subscribe(name => {
-            this.userFullName = name?.toUpperCase() ?? "";
-      });
-
-      this.userService.userId$.subscribe(userId => {
-            this.userId = userId ?? "";
-            console.log(this.userId);
-      });
-      
-      const userID = localStorage.getItem('userId') ?? "0";
-
-      this.reportsService.retrieveReports(parseInt(userID)).subscribe({
-         next: (response) => {
-            if (response.ok){
-              this.spinner.hide();
-              this.incidentsArr = response.body.details.data;
-              console.log(this.incidentsArr);
-            }
-            
-         },
-         error: (err) => {
-            console.error(err);
-         }
-      })
-
+    this.loadData();
   }
+
   
-   // Setting up the Chart
-  public lineChartData: ChartConfiguration<'line', { x: Date; y: number }[]>['data'] = {
-      datasets: [
-        {
-          label: 'Temperature',
-          data: [
-            { x: new Date('2025-08-01'), y: 28 },
-            { x: new Date('2025-08-02'), y: 31 },
-            { x: new Date('2025-08-03'), y: 29 },
-            { x: new Date('2025-08-04'), y: 32 },
-            { x: new Date('2025-08-05'), y: 30 }
-          ],
-          borderColor: 'blue',
-          backgroundColor: 'rgba(54,162,235,0.3)',
-          fill: true,
-          tension: 0.4
-        }
-      ]
-    };
+   loadData() : void {
+        this.spinner.show();
+        
+        this.userService.userName$.subscribe(name => {
+              this.userFullName = name?.toUpperCase() ?? "";
+        });
 
-  // Chart options with a time scale
-  lineChartOptions: ChartOptions<'line'> = {
-    responsive: true,
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          unit: 'day'
-        },
-        title: {
-          display: true,
-          text: 'Date'
-        }
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Temperature (°C)'
-        }
-      }
-    },
-    plugins: {
-      legend: { position: 'top' }
-    }
-  };
+        this.userService.userId$.subscribe(userId => {
+              this.userId = userId ?? "";
+              console.log(this.userId);
+        });
+        
+        const userID = localStorage.getItem('userId') ?? "0";
+        
+        // Retrieve Reports Summary 
+        this.reportsService.retrieveReports(parseInt(userID)).subscribe({
+          next: (response) => {
+              if (response.ok){
+                this.spinner.hide();
+                this.rowData = response.body.details.data;
+                console.log(this.rowData);
+              }
+              
+          },
+          error: (err) => {
+              console.error(err);
+          }
+        })
+
+        // Retrieve Aggregate Reports for Bar Chart
+        this.reportsService.aggregatedReports_1().subscribe({
+          next: (response) => {
+              if (response.ok){
+                this.spinner.hide();
+                const barChartData = response.body.details.data1;
+                const pieChartData = response.body.details.data2;
+                
+                const pieLabels = pieChartData.map((d: any) => d.label);
+                const pieValue = pieChartData.map((d:any) => d.value);
+                console.log(pieLabels);
+
+                this.barChartData.datasets[0].data = barChartData;
+
+                this.pieChartData = {
+                  labels: pieLabels,
+                  datasets: [{
+                    data: pieValue,
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FFCE56', '#56ff7bff', '#4f3800ff'],
+                 }]
+                }
 
 
+                this.chart?.update()
+              }         
+          },
+          error: (err) => {
+              console.error(err);
+          }
+        });
 
+   }
 
-
-
+  getRandomColor(): string {
+  const r = Math.floor(Math.random() * 255);
+  const g = Math.floor(Math.random() * 255);
+  const b = Math.floor(Math.random() * 255);
+  return `rgb(${r},${g},${b})`;
+}   
+  refresh(): void  {
+     this.loadData() 
+  }
 
   toggleMenu(): void {
      this.isMenuOpen = !this.isMenuOpen;
@@ -143,6 +238,7 @@ export class UserProfile implements OnInit {
     reportSubmit.subscribe({
         next: (response)=>{
             if (response.status === 200){
+              this.refresh();
               this.spinner.hide();
             }
         },
