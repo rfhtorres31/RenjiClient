@@ -46,6 +46,7 @@
          </canvas>
       </div>
       <div class="chart-2">
+          <h3>% No of Accident Types </h3>
            <canvas baseChart
                [data]="pieChartData"
                [options]="pieChartOptions"
@@ -60,6 +61,8 @@
             [rowData]="rowData"
             [columnDefs]="columnDefs"
             [defaultColDef]="defaultColDef"
+            [components]="components"
+            [context]="{ componentParent: this }"
             [animateRows]="true"
             [rowSelection]="'single'">
        </ag-grid-angular>

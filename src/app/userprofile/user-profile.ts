@@ -13,9 +13,11 @@ import { ChartConfiguration, ChartOptions, ChartData, ChartType, Chart, ArcEleme
 import 'chartjs-adapter-date-fns';
 import { ReportsService } from '../services/reports.service';
 import { AgGridModule } from 'ag-grid-angular';
-import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+import { ModuleRegistry, AllCommunityModule, buttonStyleQuartz } from 'ag-grid-community';
 import { ViewChild } from '@angular/core';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { ButtonCellRendererComponent } from '../utils/button-cell-renderer-component/button-cell-renderer-component';
+
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
@@ -50,6 +52,7 @@ export class UserProfile implements OnInit {
       { field: 'location', headerName: 'Location', sortable: true, filter: true },
       { field: 'reportedDate', headerName: 'Reported Date', sortable: true, filter: true },
       { field: 'status', headerName: 'Status', sortable: true, filter: true },
+      {headerName: 'Action', cellRenderer: 'buttonCellRenderer'}
    ]
    
     defaultColDef = {
@@ -59,6 +62,10 @@ export class UserProfile implements OnInit {
     };
 
     rowData: any[] = [];
+
+    components  = {
+       buttonCellRenderer: ButtonCellRendererComponent
+    };
 
     
  // ============================================================================== //
@@ -108,10 +115,14 @@ export class UserProfile implements OnInit {
          responsive: true,
          maintainAspectRatio: false,
          layout: {
-           padding: 10 // extra space so pie isn't cramped
+           padding: {
+               bottom: 10,
+               top: 10,
+            }
          },
          plugins: {
          legend: { position: 'right',
+                   align: 'end',
                     labels: {
               font: {
                 size: 14 // smaller text size (default is ~12–14)
@@ -147,7 +158,7 @@ export class UserProfile implements OnInit {
                return percentage;
            }
         }
-       },
+       },       
      }
 
    
@@ -163,9 +174,12 @@ export class UserProfile implements OnInit {
   ngOnInit(): void {
     this.loadData();
   }
-
+   
+  onButtonClick(row: any) {
+     console.log('Button clicked on row:', row);
+  } 
   
-   loadData() : void {
+  loadData() : void {
         this.spinner.show();
         
         this.userService.userName$.subscribe(name => {
@@ -186,25 +200,11 @@ export class UserProfile implements OnInit {
               if (response.ok){
                 this.spinner.hide();
                 this.rowData = response.body.details.data;
-                console.log(this.rowData);
+                this.noOfOpenReports = response.body.details.reportCounts.open;
+                this.noOfInProgressReports = response.body.details.reportCounts.inProgress;
+                this.noOfResolvedReports = response.body.details.reportCounts.resolved;
               }
-
-
-              for (let i=0; i<this.rowData.length; i++){
-                  const obj = this.rowData[i];
-
-                  if (obj.status === 'Open'){
-                      this.noOfOpenReports = this.noOfOpenReports + 1;
-                  }   
-                  
-                  if (obj.status === 'In Progress'){
-                    this.noOfInProgressReports = this.noOfInProgressReports + 1;
-                  }
-
-                  if (obj.status === 'Resolved'){
-                    this.noOfResolvedReports = this.noOfResolvedReports + 1;
-                  }
-              }            
+  
           },
           error: (err) => {
               console.error(err);

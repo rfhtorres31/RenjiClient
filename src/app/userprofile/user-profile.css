@@ -167,6 +167,7 @@
 }
 
 .chart-2 {
+  position: relative;
   height: 100%;
   width: 50%; 
   border-radius: 10px;
@@ -178,6 +179,9 @@
 
 
 .chart-2 h3 {
+  position: absolute;
+  left: 60%;
+  top: 15%;
   margin-top: 0;
   text-align: center;
 }
