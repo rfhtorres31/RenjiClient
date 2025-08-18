@@ -12,34 +12,56 @@
 }
 
 .modal-content {
-  height: 85%;
+  height: 90%;
   width: 40%;
   background: white;
-  padding: 1%;
+  padding: 1.2%;
   display: flex;
   flex-direction: column;
-  gap: 7%;
+  gap: 3%;
   border-radius: 2%;
 }
 
 .header {
-  width: 100%;
+ width: 100%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
 }
 
 .header span {
   font-size: 1.5rem;
 }
 
+.header button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  height: 80%;
+  background: none;
+  border: none;
+  padding: 2%;
+  position: absolute;
+  left: 90%;
+}
+
+.header button:hover {
+  cursor: pointer;
+}
+
+
 .form-content {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2%;
+  gap: 3%;
 }
 
 .form-field-text-area {
-  height: 25%;
+  height: 22%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -50,12 +72,12 @@
 }
 
 #text-area {
-  padding: 1%;
+  padding: 2%;
   height: 100%;
 }
 
 .form-field {
-  height: 15%;
+  height: 13%;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -70,4 +92,12 @@
 #dropdown {
   height: 100%;
   width: 100%;
+}
+
+form button {
+  margin-top: 2%;
+  background: rgb(202, 202, 202);
+  border: none;
+  height: 8%;
+  border-radius: 2px;
 }

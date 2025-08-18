@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Inject  } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule} from '@angular/common';
 import { NewIncidentReportModal } from '../modals/new-incident-report-modal/new-incident-report-modal';
+import { NewActionPlanModal } from '../modals/new-action-plan-modal/new-action-plan-modal';
 import { NewReport } from '../interfaces/report';
 import { NgxSpinnerService} from 'ngx-spinner';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -17,6 +18,7 @@ import { ModuleRegistry, AllCommunityModule, buttonStyleQuartz } from 'ag-grid-c
 import { ViewChild } from '@angular/core';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ButtonCellRendererComponent } from '../utils/button-cell-renderer-component/button-cell-renderer-component';
+import { ActionPlan } from '../interfaces/actionPlan';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -26,6 +28,7 @@ Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
   standalone: true,
   imports: [CommonModule, 
             NewIncidentReportModal, 
+            NewActionPlanModal,
             NgxSpinnerModule, 
             MatIconModule, 
             BaseChartDirective,
@@ -37,6 +40,7 @@ export class UserProfile implements OnInit {
 
   isMenuOpen: boolean = true;
   showModal: boolean = false;
+  showModal2: boolean = false;
   userFullName: string = "";
   userId: string = "";
   chartYLabel = ['Jan', 'Feb', 'Mar', 'Apr', 'May'];
@@ -44,6 +48,7 @@ export class UserProfile implements OnInit {
   noOfOpenReports: number = 0;
   noOfInProgressReports: number = 0;
   noOfResolvedReports: number = 0;
+  actionID: number = 0;
     
    // ======================= Incident Report Grid ================================= // 
    columnDefs = [
@@ -169,14 +174,17 @@ export class UserProfile implements OnInit {
               private userService: UserService,
               private reportsService: ReportsService,
               private spinner: NgxSpinnerService,
-              private httpService: HttpService,){}
+              private httpService: HttpService,
+              ){}
   
   ngOnInit(): void {
     this.loadData();
   }
    
   onButtonClick(row: any) {
-     console.log('Button clicked on row:', row);
+     console.log('Button clicked on row:', row?.id);
+     this.actionID = row?.id;
+     this.showModal2 = true;
   } 
   
   loadData() : void {
@@ -262,8 +270,13 @@ export class UserProfile implements OnInit {
     this.showModal = true;
   }
 
+
   closeModal(): void {
     this.showModal = false;
+  }
+
+  closeModal2(): void {
+    this.showModal2 = false;
   }
 
   logout(): void {
@@ -290,6 +303,29 @@ export class UserProfile implements OnInit {
         } 
     })
     
+  }
+
+  actionSubmit(newAction:ActionPlan){
+      this.spinner.show();
+      console.log(newAction);
+
+      var actionPlanSumibt = this.httpService.submitNewActionPlan(newAction); // Observable
+
+      actionPlanSumibt.subscribe({
+        next: (response)=>{
+            console.log(response);
+            if (response.status === 200){
+              this.refresh();
+              this.spinner.hide();
+            }
+        },
+
+        error: (err)=>{
+          console.error(err);
+        } 
+    })
 
   }
+
+
 }

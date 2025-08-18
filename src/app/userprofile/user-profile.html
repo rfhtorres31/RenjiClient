@@ -70,3 +70,4 @@
   </div>
 </div>
 <app-new-incident-report-modal [show]="showModal" (close)="closeModal()" (formSubmit)="reportSubmit($event)"></app-new-incident-report-modal>
+<app-new-action-plan-modal [show]="showModal2" [data]="actionID" (close)="closeModal2()" (formSubmit)="actionSubmit($event)"></app-new-action-plan-modal>

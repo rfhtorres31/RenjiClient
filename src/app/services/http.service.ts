@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders} from "@angular/common/http";
 import { Observable } from "rxjs";
 import { RegisterRequest, LoginRequest} from '../interfaces/auth';
 import { NewReport } from "../interfaces/report";
+import { ActionPlan } from "../interfaces/actionPlan";
 
 // This enables the register.service.ts to be injected in components
 @Injectable({providedIn: 'root'})
@@ -38,6 +39,14 @@ export class HttpService {
          })
 
          return this.http.post(this.apiURL + '/reports/post', report, {headers, observe: 'response'});
+   }
+
+   submitNewActionPlan(actionPlan: ActionPlan): Observable<any>{
+         const headers = new HttpHeaders({
+               'Content-Type': 'application/json'
+         })
+
+         return this.http.post(this.apiURL + '/reports/actionplan', actionPlan, {headers, observe: 'response'});
    }
 
 
