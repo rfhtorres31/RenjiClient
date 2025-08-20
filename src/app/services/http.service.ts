@@ -46,7 +46,7 @@ export class HttpService {
                'Content-Type': 'application/json'
          })
 
-         return this.http.post(this.apiURL + '/reports/actionplan', actionPlan, {headers, observe: 'response'});
+         return this.http.post(this.apiURL + '/actionplan/post', actionPlan, {headers, observe: 'response'});
    }
 
 

@@ -39,6 +39,7 @@ export class NewActionPlanModal implements OnInit{
   onSubmit(event:Event) {
       if (this.myForm.valid){
          event.preventDefault();
+         console.log(this.data);
          this.formSubmit.emit({
            form: this.myForm.value,
            incidentReportID: this.data,

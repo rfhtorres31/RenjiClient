@@ -16,7 +16,7 @@ export class ButtonCellRendererComponent implements ICellRendererAngularComp{
    agInit(params: any): void {
        this.params = params;
        console.log(this.params);
-       this.showButton = params.data?.status === "Open";
+       this.showButton = params.data?.Status === "Open";
    }
 
    

@@ -10,6 +10,7 @@
   background: rgb(31, 31, 31);
   display: flex;
   justify-content: space-between; /* pushes children to opposite ends */
+  border: 1px solid blue;
 }
 
 .title-section {

@@ -19,6 +19,7 @@ import { ViewChild } from '@angular/core';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { ButtonCellRendererComponent } from '../utils/button-cell-renderer-component/button-cell-renderer-component';
 import { ActionPlan } from '../interfaces/actionPlan';
+import { NavMenu } from '../shared/nav-menu/nav-menu';
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -32,6 +33,7 @@ Chart.register(ArcElement, Tooltip, Legend, ChartDataLabels);
             NgxSpinnerModule, 
             MatIconModule, 
             BaseChartDirective,
+            NavMenu,
             AgGridModule],
   templateUrl: './user-profile.html',
   styleUrls: ['./user-profile.css']
@@ -52,11 +54,11 @@ export class UserProfile implements OnInit {
     
    // ======================= Incident Report Grid ================================= // 
    columnDefs = [
-      { field: 'id', headerName: 'ID', sortable: true, filter: true },
-      { field: 'type', headerName: 'Type', sortable: true, filter: true },
-      { field: 'location', headerName: 'Location', sortable: true, filter: true },
-      { field: 'reportedDate', headerName: 'Reported Date', sortable: true, filter: true },
-      { field: 'status', headerName: 'Status', sortable: true, filter: true },
+      { field: 'ID', headerName: 'ID', sortable: true, filter: true },
+      { field: 'Type', headerName: 'Type', sortable: true, filter: true },
+      { field: 'Location', headerName: 'Location', sortable: true, filter: true },
+      { field: 'ReportedDate', headerName: 'Reported Date', sortable: true, filter: true },
+      { field: 'Status', headerName: 'Status', sortable: true, filter: true },
       {headerName: 'Action', cellRenderer: 'buttonCellRenderer'}
    ]
    
@@ -182,10 +184,14 @@ export class UserProfile implements OnInit {
   }
    
   onButtonClick(row: any) {
-     console.log('Button clicked on row:', row?.id);
-     this.actionID = row?.id;
+     console.log('Button clicked on row:', row?.ID);
+     this.actionID = row?.ID;
      this.showModal2 = true;
   } 
+
+  onSidebarToggle(open: boolean) {
+    console.log(open);
+  }
   
   loadData() : void {
         this.spinner.show();
@@ -207,6 +213,7 @@ export class UserProfile implements OnInit {
 
               if (response.ok){
                 this.spinner.hide();
+                console.log(response.body.details.data);
                 this.rowData = response.body.details.data;
                 this.noOfOpenReports = response.body.details.reportCounts.open;
                 this.noOfInProgressReports = response.body.details.reportCounts.inProgress;
@@ -261,16 +268,12 @@ export class UserProfile implements OnInit {
   refresh(): void  {
      this.loadData() 
   }
-
-  toggleMenu(): void {
-     this.isMenuOpen = !this.isMenuOpen;
-  }
   
   openModal(): void {
     this.showModal = true;
   }
 
-
+  
   closeModal(): void {
     this.showModal = false;
   }
@@ -279,10 +282,7 @@ export class UserProfile implements OnInit {
     this.showModal2 = false;
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
-  }
+
 
   reportSubmit(newReport:NewReport){
     this.spinner.show();
