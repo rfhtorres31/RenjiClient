@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ActionPlan } from '../../interfaces/actionPlan';
@@ -34,6 +34,12 @@ export class NewActionPlanModal implements OnInit{
             actionTypes: ['', Validators.required],   
             targetDate: ['', Validators.required],    
         });    
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      if(changes['show']){
+        this.myForm.reset();
+      }
   }
 
   onSubmit(event:Event) {

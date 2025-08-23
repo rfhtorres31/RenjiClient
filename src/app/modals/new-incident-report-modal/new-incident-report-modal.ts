@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NewReport } from '../../interfaces/report';
@@ -10,7 +10,7 @@ import { NewReport } from '../../interfaces/report';
   templateUrl: './new-incident-report-modal.html',
   styleUrls: ['./new-incident-report-modal.css']
 })
-export class NewIncidentReportModal implements OnInit{
+export class NewIncidentReportModal implements OnInit, OnChanges{
 
   @Input() show = false;
   @Output() close = new EventEmitter<void>();
@@ -23,6 +23,13 @@ export class NewIncidentReportModal implements OnInit{
   onClose(): void {
     this.close.emit(); // This will send signal to its callback function counterpart on the parents component (closeModal()) to run
   }
+  
+  // reset the form whenever the show property changes
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['show']){
+      this.myForm.reset();
+    }
+  }
 
   ngOnInit(): void {
             this.myForm = this.fb.group({
@@ -30,7 +37,9 @@ export class NewIncidentReportModal implements OnInit{
             accidentTypeId: ['', [Validators.required]],
             description: ['', Validators.required],
             location: ['', Validators.required],         
-        });    
+        });   
+        
+        this.myForm.reset();
   }
    
   onSubmit(event:Event) {
@@ -38,7 +47,6 @@ export class NewIncidentReportModal implements OnInit{
     if (this.myForm.valid){
       event.preventDefault();
       this.formSubmit.emit(this.myForm.value as NewReport);
-      this.myForm.reset();
       this.onClose(); // close the modal after submit
     }
   }
