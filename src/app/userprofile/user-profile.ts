@@ -93,24 +93,26 @@ export class UserProfile implements OnInit {
     };
 
   // Chart options with a time scale
-  barChartOptions: ChartOptions<'bar'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        type: 'category',
-        title: { display: true, text: 'Accident Type' }
-      },
-      y: {
-          beginAtZero: true,
-          title: { display: true, text: 'Count' }
-      }
+public barChartOptions: ChartOptions<'bar'> = {
+  responsive: true,
+  maintainAspectRatio: false,
+  indexAxis: 'y', // horizontal mode
+  scales: {
+    x: {
+      beginAtZero: true,
+      title: { display: true, text: 'Count' }
     },
-    plugins: {
-      legend: { position: 'top' },
-      datalabels: { display: false }
+    y: {
+      type: 'category',
+      title: { display: true, text: 'Accident Type' }
     }
-  };
+  },
+  plugins: {
+    legend: { position: 'top' },
+    datalabels: { display: false }
+  }
+};
+
 
   pieChartType: 'pie' = 'pie';
  // =================================================================================== //
@@ -232,6 +234,7 @@ export class UserProfile implements OnInit {
               if (response.ok){
                 this.spinner.hide();
                 const barChartData = response.body.details.data1;
+                console.log(barChartData);
                 const pieChartData = response.body.details.data2;
                 
                 const pieLabels = pieChartData.map((d: any) => d.label);
@@ -247,8 +250,6 @@ export class UserProfile implements OnInit {
                     backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FFCE56', '#56ff7bff', '#4f3800ff'],
                  }]
                 }
-
-
                 this.chart?.update()
               }         
           },
@@ -281,7 +282,6 @@ export class UserProfile implements OnInit {
   closeModal2(): void {
     this.showModal2 = false;
   }
-
 
 
   reportSubmit(newReport:NewReport){

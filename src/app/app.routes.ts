@@ -3,10 +3,12 @@ import { Register } from './register/Register.1';
 import { Login } from './login/login';
 import { UserProfile } from './userprofile/user-profile';
 import { Actionplan } from './actionplan/actionplan';
+import { ChangeStatusModal } from './modals/change-status-modal/change-status-modal';
 
 export const routes: Routes = [
     {path:'register', component: Register},
     {path:'login', component: Login},
     {path:'profile', component: UserProfile},
-    {path: 'actionplan', component: Actionplan}
+    {path: 'actionplan', component: Actionplan},
+    {path: 'status', component: ChangeStatusModal},
 ];

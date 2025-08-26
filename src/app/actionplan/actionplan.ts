@@ -5,21 +5,25 @@ import { NgxSpinnerService} from 'ngx-spinner';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AgGridModule } from 'ag-grid-angular';
 import { ActionPlanService } from '../services/action.service';
+import { ChangeStatusModal } from '../modals/change-status-modal/change-status-modal';
 
 @Component({
   selector: 'app-actionplan',
   imports: [NavMenu, 
             NgxSpinnerModule, 
-            AgGridModule
-       
+            AgGridModule,
+            ChangeStatusModal       
   ],
   templateUrl: './actionplan.html',
   styleUrl: './actionplan.css'
 })
-export class Actionplan implements OnInit{
+export class Actionplan implements OnInit {
    
    userFullName: string = "";
+   actionDetailTitleValue: string = "";
+   statusValue: string = "";
    userId: string = "";
+   showModal: boolean = false;
 
    // ======================= Action Plan Grid ================================= // 
       columnDefs = [
@@ -45,6 +49,7 @@ export class Actionplan implements OnInit{
       }},
       { field: 'MaintenanceTeam', headerName: 'Maintenance Staff', sortable: true, filter: true },
       { field: 'AccidentType', headerName: 'Accident Type', sortable: true, filter: true },
+      { field: 'Status', headerName: 'Status', sortable: true, filter: true },
    ]
    
     defaultColDef = {
@@ -97,9 +102,18 @@ export class Actionplan implements OnInit{
                console.error(err);
           },
         })
-        
-
-
-
    }
+  
+   onRowClicked(event: any) {
+     this.showModal = true;
+     this.actionDetailTitleValue = event.data.ActionDetail;
+     this.statusValue = event.data.Status;
+     console.log(event.data);
+     
+   }
+  
+   closeModal() {
+     this.showModal = false;
+   }
+
 }

@@ -12,6 +12,7 @@
                     [columnDefs]="columnDefs"
                     [defaultColDef]="defaultColDef"
                     (gridReady)="onGridReady($event)"
+                    (cellDoubleClicked)="onRowClicked($event)"
                     [animateRows]="true"
                     [domLayout]="'normal'"
                     [rowSelection]="'single'">
@@ -20,3 +21,5 @@
       </div>
     </div>
 </div>
+
+<app-change-status-modal [show]="showModal" [Status] ="statusValue" [actionDetailTitle] = "actionDetailTitleValue" (close)="closeModal()" ></app-change-status-modal>
