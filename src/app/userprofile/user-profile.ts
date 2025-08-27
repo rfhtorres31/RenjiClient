@@ -224,7 +224,10 @@ public barChartOptions: ChartOptions<'bar'> = {
   
           },
           error: (err) => {
-              console.error(err);
+              console.error(err.status);
+              if (err.status === 401){
+                 this.router.navigate(['login']); 
+              }
           }
         })
 
@@ -300,6 +303,9 @@ public barChartOptions: ChartOptions<'bar'> = {
 
         error: (err)=>{
           console.error(err);
+          if (err.status == 401){
+            this.router.navigate(['login']);
+          }
         } 
     })
     

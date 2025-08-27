@@ -2,21 +2,21 @@
  <!-- the $event.stopPropagation prevents the onClose() from running when its clicked -->
   <div class="modal-content"> 
     <div class="header">
-      <span>Action Plan Status</span>
+      <span>Plan Status</span>
       <button type="button" (click)="onClose()">
          <mat-icon style="font-size: 20px;">close</mat-icon>
       </button>
     </div>
     <div class="main-content">
        <div class="content">
-        <span>Action Plan Title: {{actionDetailTitle}}</span>
+        <span>Action Plan: {{actionDetailTitle}}</span>
       </div>
       <div class="content">
         <span>Current Status: {{Status}}</span>
       </div>
       <div class="content-dropdown">
         <label>Change Status</label>
-        <select name="myDropdown">
+        <select name="myDropdown" [formControl]="actionPlanStatusControl">
             <option value="20">Pending</option>
             <option value="30">Completed</option>
             <option value="40">Cancelled</option>
@@ -24,11 +24,14 @@
       </div>
       <div class="content-textarea">
         <label>Remarks</label>
-        <textarea rows="4" cols="50" id="text-area" formControlName="actionDescription"></textarea>
+        <textarea rows="4" cols="50" id="text-area" [formControl]="remarks"></textarea>
       </div>
       <div class="content">
-        <button type="button">Update</button>
+        <button type="button" (click)="updateActionPlan()">Update</button>
       </div>
     </div>
   </div>
 </div>
+
+
+<!-- []->Property Binding, ()->Event Binding -->

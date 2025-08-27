@@ -1,7 +1,27 @@
  
         <div class="top-bar">
-            <div class="side-bar" [class.hide]="isSideMenuOpen">
-
+            <!-- When the angular loads, it renders HTML + CSS first before anything -->
+            <div class="side-bar hide" [class.hide]="isSideMenuOpen">
+               <div class="side-bar-content">
+                    <div class="menu-item">
+                        <button type="button" (click)="goToDashboard()">
+                            <mat-icon>dashboard</mat-icon>
+                            <span>Incident Reports Dashboard</span>
+                        </button>
+                    </div>
+                    <div class="menu-item">
+                        <button type="button" (click)="goToActionPlan()">
+                            <mat-icon>assignment</mat-icon>
+                            <span>Action Plan List</span>
+                        </button>
+                    </div>
+                    <div class="menu-item">
+                        <button type="button" (click)="goToActionPlanDashboard()">
+                            <mat-icon>dashboard</mat-icon>
+                            <span>Action Plan Dashboard</span>
+                        </button>
+                    </div>
+               </div>
             </div>
             <div class="title-section">
               <button mat-icon-button class="my-hamburger-btn" (click)="toggleSideMenu()">

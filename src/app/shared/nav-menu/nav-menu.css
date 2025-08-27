@@ -11,16 +11,63 @@
 
 .side-bar {
   height: 100vh;
-  width: 20vw;
-  background-color: rgba(0,0,0,0.7);
+  width: 25vw;
+  background-color: rgba(0,0,0,1);
   z-index: 1000;
   position: fixed; /* always fixed on the left */
   top: 0;
   left: 0;
-
+  /* border: 1px solid red; */
   transform: translateX(0);
   opacity: 1;
   transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+.side-bar-content {
+ display: flex; 
+ flex-direction: column;
+ /* border: 1px solid blue; */
+ margin-top: 20%;
+ height: 60%;
+ gap: 5%;
+ padding-top: 5%;
+}
+
+
+.menu-item {
+  height: 11%;
+  /* border: 1px solid rgb(0, 166, 255); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item button {
+  background: rgb(0, 0, 0);
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  height: 100%;
+  width: 90%;
+  border-radius: 10px;
+  border: none;
+  color: white;
+}
+
+.menu-item span {
+  font-size: 1.1rem;
+}
+
+.menu-item button:hover {
+  cursor: pointer;
+  background-color: white; /* background flips */
+}
+
+.menu-item button:hover span,
+.menu-item button:hover mat-icon {
+  color: black;  /* text + icon flip to black */
 }
 
 .side-bar.hide {

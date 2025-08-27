@@ -53,7 +53,7 @@ export class Login implements OnInit {
                     this.userService.setUserName(userFullName);
                     this.userService.setUserId(userID);
 
-                    this.router.navigate(['/profile']);
+                    this.router.navigate(['/dashboard']);
                     this.spinner.hide();
                  }
               },

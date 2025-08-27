@@ -19,4 +19,20 @@ export class ActionPlanService {
 
     }
 
+   updateActionPlan(actionID: string, incidentReportID: string, body: object): Observable<any>{
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        })
+
+      return this.http.put(this.apiURL + `/actionplan/put?actionID=${actionID}&incidentReportID=${incidentReportID}`, body, {headers, observe: 'response'}); 
+   }
+
+   retrieveActionPLanKPI(): Observable<any>{
+       const headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        })
+
+      return this.http.get(this.apiURL + "/actionplan/get/kpi", {headers, observe: 'response'}); 
+   }; 
+
 }

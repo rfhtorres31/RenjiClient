@@ -6,6 +6,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { AgGridModule } from 'ag-grid-angular';
 import { ActionPlanService } from '../services/action.service';
 import { ChangeStatusModal } from '../modals/change-status-modal/change-status-modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actionplan',
@@ -22,8 +23,10 @@ export class Actionplan implements OnInit {
    userFullName: string = "";
    actionDetailTitleValue: string = "";
    statusValue: string = "";
+   actionIDValue: string = "";
    userId: string = "";
    showModal: boolean = false;
+   incidentReportIDValue: string  = "";
 
    // ======================= Action Plan Grid ================================= // 
       columnDefs = [
@@ -38,15 +41,11 @@ export class Actionplan implements OnInit {
       { field: 'IncidentReportTitle', headerName: 'Incident Report Title', sortable: true, filter: true },
       { field: 'Location', headerName: 'Location', sortable: true, filter: true },
       { field: 'Priority', headerName: 'Priority', sortable: true, filter: true },
-      { field: 'ReportedDate', headerName: 'Reported Date', sortable: true, filter: true, valueFormatter: (params:any) => {
+      { field: 'DueDate', headerName: 'Due Date', sortable: true, filter: true, valueFormatter: (params:any) => {
             if (!params.value) return '';
-            return new Date(params.value).toLocaleString(); 
+            return new Date(params.value).toLocaleDateString(); 
       }},
       { field: 'ActionType', headerName: 'Action Type', sortable: true, filter: true },
-      { field: 'CreatedAt', headerName: 'Created At', sortable: true, filter: true,  valueFormatter: (params:any) => {
-            if (!params.value) return '';
-            return new Date(params.value).toLocaleString(); 
-      }},
       { field: 'MaintenanceTeam', headerName: 'Maintenance Staff', sortable: true, filter: true },
       { field: 'AccidentType', headerName: 'Accident Type', sortable: true, filter: true },
       { field: 'Status', headerName: 'Status', sortable: true, filter: true },
@@ -69,6 +68,7 @@ export class Actionplan implements OnInit {
    // ========================================================================== //
 
    constructor(private userService: UserService,
+               private router: Router,
                private spinner: NgxSpinnerService,
                private actionPlanService: ActionPlanService
    ){}
@@ -83,23 +83,22 @@ export class Actionplan implements OnInit {
         this.userService.userName$.subscribe(name => {
               this.userFullName = name?.toUpperCase() ?? "";
         });
-        
+
+        this.spinner.show();
 
         // Retrieve Action Plan Records
         this.actionPlanService.retrieveActionPlan().subscribe({
           next: (res)=>{
-              this.spinner.show();
+              
               if (res.ok){
-                 console.log(res.body.details);
-                 this.rowData = res.body.details.data;                 
-                 if(this.rowData.length > 0) {
-                    this.spinner.hide();
-                 }
+                 this.rowData = res.body.details.data;   
+                 this.spinner.hide();              
               }
-
           },
           error: (err)=>{
                console.error(err);
+               this.router.navigate(['login']);
+               this.spinner.hide();
           },
         })
    }
@@ -108,8 +107,9 @@ export class Actionplan implements OnInit {
      this.showModal = true;
      this.actionDetailTitleValue = event.data.ActionDetail;
      this.statusValue = event.data.Status;
-     console.log(event.data);
-     
+     this.actionIDValue = event.data.ActionID;
+     this.incidentReportIDValue = event.data.IncidentReportID;
+     console.log(event.data);   
    }
   
    closeModal() {
