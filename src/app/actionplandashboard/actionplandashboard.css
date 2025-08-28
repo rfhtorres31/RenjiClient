@@ -39,6 +39,28 @@
   width: 33%;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.kpi-value {
+  height: 60%;
+  width:100%;
+  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
+}
+
+.kpi-title {
+  height: 40%;
+  width:100%;
+  border: 1px solid rgb(0, 255, 72);
+  display: flex;
+  justify-content: center;
 }
 
 .bar-chart {
@@ -50,7 +72,7 @@
 .dashboard-1-2 {
   height: 100%;
   width: 35%;
-  border: 1.5px solid brown;
+  border: 1.5px solid rgb(63, 242, 8);
 }
 
 .dashboard-2 {

@@ -27,12 +27,20 @@ export class ActionPlanService {
       return this.http.put(this.apiURL + `/actionplan/put?actionID=${actionID}&incidentReportID=${incidentReportID}`, body, {headers, observe: 'response'}); 
    }
 
-   retrieveActionPLanKPI(): Observable<any>{
+   retrieveActionPlanKPI(): Observable<any>{
        const headers = new HttpHeaders({
             'Content-Type': 'application/json'
         })
 
       return this.http.get(this.apiURL + "/actionplan/get/kpi", {headers, observe: 'response'}); 
+   }; 
+
+  retrieveActionPlanChart(): Observable<any>{
+       const headers = new HttpHeaders({
+            'Content-Type': 'application/json'
+        })
+
+      return this.http.get(this.apiURL + "/actionplan/get/chart", {headers, observe: 'response'}); 
    }; 
 
 }

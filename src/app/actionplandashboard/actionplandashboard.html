@@ -5,13 +5,16 @@
       <div class="dashboard-1-1">
         <div class="kpi">
            <div class="kpi-item">
-
+             <span class="kpi-value">{{averageDaysOverDue}}</span>
+             <span class="kpi-title">Average Days Over Due</span>
            </div>
            <div class="kpi-item">
-
+             <span class="kpi-value">{{percentageOnTime}}%</span>
+             <span class="kpi-title">% On Time</span>
            </div>
            <div class="kpi-item">
-
+             <span class="kpi-value">{{noOfActivePlans}}</span>
+             <span class="kpi-title">No Of Active Plans</span>
            </div>
         </div>
         <div class="bar-chart">
@@ -19,7 +22,13 @@
         </div>
       </div>
       <div class="dashboard-1-2">
-
+        <canvas baseChart
+          width="400"
+          height="260"
+          [data]="doughnutChartData"
+          [options]="doughnutChartOptions"
+          [type]="doughnutChartType">
+        </canvas>
       </div>
     </div>   
     <div class="dashboard-2">
