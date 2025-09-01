@@ -185,13 +185,6 @@ export class Actionplandashboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // const startDate = new Date(2025, 8, 28); // Month is 0-indexed: 7 = August
-    // const endDate = new Date(2025, 8, 30);
-
-    // for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 1)) {
-    //   this.dateLabels.push(d.getDate().toString()); // Just day number, or use d.toLocaleDateString()
-    // }
-
     this.loadData();
   }
 
@@ -203,7 +196,6 @@ export class Actionplandashboard implements OnInit {
               this.userFullName = name?.toUpperCase() ?? "";
         });
 
-        this.spinner.show();
         
        //================  API call for KPI ==================//
         this.actionService.retrieveActionPlanKPI().subscribe({

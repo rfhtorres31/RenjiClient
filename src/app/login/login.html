@@ -1,16 +1,37 @@
 <div class="login-container">
-   <ngx-spinner type="ball-scale-multiple"></ngx-spinner>
-    <h2>Renji</h2>
-    <form class="form-container" [formGroup]="myForm" (ngSubmit)="onSubmit()">
-       <h3>Login</h3>
-       <div class="form-content">
-          <div class="form-field">
-             <input type="email" formControlName="email" placeholder="Email">
-          </div>
-          <div class="form-field">
-             <input type="password" formControlName="password" placeholder="New password">
-          </div>
-          <button>Log In</button>
-       </div>
-    </form>
+      <div class="logo-container">
+      <img ngSrc="logo.png" width="300" height="200" alt="Logo" class="logo-img" />
+      </div>
+   <div class="form-container">
+      <form class="form-content" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+        <div class="form-field">
+          <input type="email" formControlName="email" placeholder="Email">
+        </div>
+        <div class="form-field">
+          <input type="password" formControlName="password"  placeholder="New password">
+        </div>
+        <button>Log In</button>
+      </form>
+      <div class="form-detail">
+         <h3>Incident and Reporting System:</h3>
+         <div class="detail-content">
+            <div class="detail-item">
+               <mat-icon>check_circle_outline</mat-icon>
+               <span>Action Planning</span>
+            </div>
+            <div class="detail-item">
+               <mat-icon>check_circle_outline</mat-icon>
+               <span>Incident Reporting</span>
+            </div>
+            <div class="detail-item">
+               <mat-icon>check_circle_outline</mat-icon>
+               <span>Incident Trends</span>
+            </div>
+         </div>
+         <div class="remember-me">
+            <input type="checkbox" id="rememberMe" />
+            <label for="rememberMe">Remember me</label>
+         </div>
+      </div>
+   </div>
 </div>

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage} from '@angular/common';
 import { HttpService } from '../services/http.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService} from 'ngx-spinner';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { UserService } from '../services/user.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, NgxSpinnerModule],
+  imports: [ReactiveFormsModule, CommonModule, NgxSpinnerModule, MatIconModule, NgOptimizedImage],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -33,6 +34,7 @@ export class Login implements OnInit {
 
 
     onSubmit(): void {
+        console.log("Executed");
         if (this.myForm.valid) {
            this.spinner.show(); // Show the loader
            var loginRequest = this.httpService.loginUser(this.myForm.value); 
