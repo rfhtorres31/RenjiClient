@@ -24,13 +24,13 @@ export class HttpService {
    }
   
 
-   loginUser(userData: LoginRequest): Observable<any>{
-
+   loginUser(userData: LoginRequest, rememberMe: boolean): Observable<any>{
+      console.log(userData);
       const headers = new HttpHeaders({
             'Content-Type': 'application/json'
       })
       
-      return this.http.post(this.apiURL + '/auth/login', userData, {headers, observe: 'response'});
+      return this.http.post(this.apiURL + `/auth/login?rememberMe=${rememberMe}`, userData, {headers, observe: 'response'});
    }
 
    submitNewReport(report: NewReport): Observable<any>{

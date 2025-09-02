@@ -1,7 +1,7 @@
 <div class="login-container">
-      <div class="logo-container">
+  <div class="logo-container">
       <img ngSrc="logo.png" width="300" height="200" alt="Logo" class="logo-img" />
-      </div>
+   </div>
    <div class="form-container">
       <form class="form-content" [formGroup]="myForm" (ngSubmit)="onSubmit()">
         <div class="form-field">
@@ -29,7 +29,7 @@
             </div>
          </div>
          <div class="remember-me">
-            <input type="checkbox" id="rememberMe" />
+            <input type="checkbox" id="rememberMe" [(ngModel)]="rememberMe"/>
             <label for="rememberMe">Remember me</label>
          </div>
       </div>

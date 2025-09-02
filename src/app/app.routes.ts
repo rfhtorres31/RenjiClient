@@ -6,6 +6,7 @@ import { Actionplan } from './actionplan/actionplan';
 import { Actionplandashboard } from './actionplandashboard/actionplandashboard';
 
 export const routes: Routes = [
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
     {path:'register', component: Register},
     {path:'login', component: Login},
     {path:'dashboard', component: UserProfile},
