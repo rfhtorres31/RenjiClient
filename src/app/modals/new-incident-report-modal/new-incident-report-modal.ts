@@ -26,7 +26,7 @@ export class NewIncidentReportModal implements OnInit, OnChanges{
   
   // reset the form whenever the show property changes
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['show']){
+    if (changes['show'] && this.myForm) {
       this.myForm.reset();
     }
   }

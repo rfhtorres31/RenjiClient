@@ -37,9 +37,9 @@ export class NewActionPlanModal implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-      if(changes['show']){
-        this.myForm.reset();
-      }
+    if (changes['show'] && this.myForm) {
+      this.myForm.reset();
+    }
   }
 
   onSubmit(event:Event) {

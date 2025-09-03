@@ -18,7 +18,7 @@
        <button class="top-content-btn" (click)="openModal()">New Incident</button>
     </div>
     <div class="middle-content">
-      <div class="chart-1">
+      <div class="chart-1" *ngIf="isBarChart">
           <h3>Number of Accidents Per Type</h3>
          <canvas
                baseChart

@@ -10,22 +10,15 @@ export class ReportsService {
 
    constructor(private http: HttpClient) {}
 
-   retrieveReports(userID: number): Observable<any>{
+   retrieveReports(): Observable<any>{
        const headers = new HttpHeaders({
             'Content-Type': 'application/json'
         })
 
-      return this.http.get(this.apiURL + `/reports/get?userID=${userID}`, {headers, observe: 'response'}); 
+       return this.http.get(this.apiURL + "/reports/get", {headers, observe: 'response'}); 
 
    }
 
-   aggregatedReports_1(): Observable<any>{
-       const headers = new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-
-      return this.http.get(this.apiURL + '/reports/summaryreports-1', {headers, observe: 'response'}); 
-   }
 
    aggregatedReports_2(): Observable<any>{
        const headers = new HttpHeaders({

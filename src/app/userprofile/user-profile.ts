@@ -51,6 +51,7 @@ export class UserProfile implements OnInit {
   noOfInProgressReports: number = 0;
   noOfResolvedReports: number = 0;
   actionID: number = 0;
+  isBarChart: boolean = true;
     
    // ======================= Incident Report Grid ================================= // 
    columnDefs = [
@@ -207,44 +208,30 @@ public barChartOptions: ChartOptions<'bar'> = {
               console.log(this.userId);
         });
         
-        const userID = localStorage.getItem('userId') ?? "0";
-        
-        // Retrieve Reports Summary 
-        this.reportsService.retrieveReports(parseInt(userID)).subscribe({
+        this.reportsService.retrieveReports().subscribe({
           next: (response) => {
 
               if (response.ok){
                 this.spinner.hide();
-                console.log(response.body.details.data);
-                this.rowData = response.body.details.data;
-                this.noOfOpenReports = response.body.details.reportCounts.open;
-                this.noOfInProgressReports = response.body.details.reportCounts.inProgress;
-                this.noOfResolvedReports = response.body.details.reportCounts.resolved;
-              }
-  
-          },
-          error: (err) => {
-              console.error(err.status);
-              if (err.status === 401){
-                 this.router.navigate(['login']); 
-              }
-          }
-        })
 
-        // Retrieve Aggregate Reports for Bar Chart
-        this.reportsService.aggregatedReports_1().subscribe({
-          next: (response) => {
-              if (response.ok){
-                this.spinner.hide();
-                const barChartData = response.body.details.data1;
-                console.log(barChartData);
-                const pieChartData = response.body.details.data2;
+                // For Report Summary Table
+                this.rowData = response.body.details.incidentReports.data;
+                this.noOfOpenReports = response.body.details.incidentReports.reportCounts.open;
+                this.noOfInProgressReports = response.body.details.incidentReports.reportCounts.inProgress;
+                this.noOfResolvedReports = response.body.details.incidentReports.reportCounts.resolved;
+
+                // For Bar Chart and Pie Chart
+                const barChartData = response.body.details.barChart;
+                const pieChartData = response.body.details.pieChart;
                 
                 const pieLabels = pieChartData.map((d: any) => d.label);
                 const pieValue = pieChartData.map((d:any) => d.value);
                 console.log(pieLabels);
-
-                this.barChartData.datasets[0].data = barChartData;
+                
+                if (barChartData.length > 0){
+                     this.isBarChart = true;
+                     this.barChartData.datasets[0].data = [...barChartData];
+                }
 
                 this.pieChartData = {
                   labels: pieLabels,
@@ -253,13 +240,18 @@ public barChartOptions: ChartOptions<'bar'> = {
                     backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#FFCE56', '#56ff7bff', '#4f3800ff'],
                  }]
                 }
-                this.chart?.update()
-              }         
+
+                this.chart?.update();
+
+              }
           },
           error: (err) => {
-              console.error(err);
+              console.error(err.status);
+              if (err.status === 401){
+                 this.router.navigate(['login']); 
+              }
           }
-        });
+        })
 
    }
 
